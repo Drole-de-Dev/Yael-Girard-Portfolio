@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yaël Girard |  Developmdent student</title>
+  <meta name="description" content="Portfolio of Yaël Girard, second-year student development.">
+  <link rel="icon" href="images/crystal.svg" type="image/svg+xml">
+
+  <!-- Gogle Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Quicksand:wght@500;700&display=swap">
+
+  <link rel="stylesheet" href="style/style.css">
+  <script src="js/theme.js"></script>
+  <script src="js/rain.js" defer></script>
+  <script src="js/thunder.js" defer></script>
+</head>
+<body>
+
+  <!-- Rain drawing -->
+  <canvas id="rain" aria-hidden="true"></canvas>
+
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="index.html">
+        <img src="images/crystal.svg" alt="" width="30" height="30">
+        Yaël Girard
+      </a>
+      <!-- Menu points to sections of this page, -->
+        <nav aria-label="Main">
+          <a href="index.html#about">About</a>
+          <a href="index.html#projects">Projects</a>
+          <a href="index.html#contact">Contact</a>
+        </nav>
+        <button type="button" class="pill" id="theme-toggle" hidden>Switch to day</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="hero">
+      <p class="intro">Game development student, 2nd year</p>
+      <h1>Hi, I'm Yaël Girard.</h1>
+      <p class="lead">I make small games, and I like Worldbuilding <!-- and your mom --> . It's raining, grab a tea and stay a while.</p>
+    </section>
+
+    <section id="about">
+      <h2>About me</h2>
+      <div class="about glass">
+        <!-- TODO: replace images/crystal.svg placeholder -->
+        <img class="portrait" src="images/crystal.svg" alt="A blue crystal, standing in for a portrait">
+        <div>
+          <p>I'm a second-year student in programming (video game-oriented) at Gaming Campus Lyon. I also made some more or less useful tools.</p>
+          <p>I learned HTML/CSS some JS, python and I'm learning C++.</p>
+          <ul class="chips">
+            <li>Git</li>
+            <li>Python</li>
+            <li>HTML &amp; CSS</li>
+            <li>C++</li>
+            <li>A bit of C# / .NET / Node.js and lua</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="cards">
+
+        <!-- ONE PROJECT = ONE CARD. -->
+        <a class="card glass" href="lighthouse-keeper-secret.html">
+          <img src="images/lks.png" alt="Placeholder cover image">
+          <div class="card-body">
+            <p class="tag">A two-month summer project</p>
+            <h3>The Lighthouse Keeper's Secret</h3>
+            <p>A point-and-click puzzle game set in a lighthouse <!-- Absolute sherlock Holmes --></p>
+          </div>
+        </a>
+
+        <div class="card-empty">
+          <p>The next project is still in the rain.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!--TODO: Upload on Itch.io and do something with linkedIn-->
+    <section id="contact">
+      <h2>Find me</h2>
+      <div class="links">
+        <a class="btn btn-main" href="cv.pdf" download>Download my résumé</a>
+        <!-- <a class="btn" href="https://itch.io" target="_blank">itch.io</a> -->
+        <a class="btn" href="https://github.com/3Mcrystal" target="_blank">GitHub</a>
+        <!-- <a class="btn" href="https://www.linkedin.com" target="_blank">LinkedIn</a> -->
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="tea" aria-hidden="true">
+      <span class="steam"></span>
+      <span class="steam"></span>
+      <span class="steam"></span>
+      <span class="steam"></span>
+      <svg width="100" height="44" viewBox="0 0 100 44">
+        <ellipse class="saucer" cx="45" cy="38" rx="38" ry="5"/>
+        <path class="handle" d="M70 14 C86 12 86 30 68 30"/>
+        <path class="cup" d="M16 8 H74 V18 C74 30 62 38 45 38 C28 38 16 30 16 18 Z"/>
+        <ellipse class="cup" cx="45" cy="8" rx="29" ry="5.5"/>
+        <ellipse class="tea-surface" cx="45" cy="9" rx="26" ry="4"/>
+      </svg>
+    </div>
+    <p>Take your time, the tea is still hot.</p>
+
+    <div class="atmosphere">
+      <div class="seg" id="rain-levels" role="group" aria-label="Rain intensity" hidden>
+        <span>Rain</span>
+        <button type="button" data-level="calm" aria-pressed="false">Calm</button>
+        <button type="button" data-level="steady" aria-pressed="true">Steady</button>
+        <button type="button" data-level="storm" aria-pressed="false">Storm</button>
+      </div>
+      <button type="button" class="pill" id="thunder-toggle" aria-pressed="true" hidden>Thunder</button>
+    </div>
+
+    <p>&copy; 2026 3Mcrystal. Made with HTML, CSS and a bit of rain.</p>
+  </footer>
+
+</body>
+</html>

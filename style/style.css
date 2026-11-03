@@ -1,0 +1,676 @@
+/* Night*/
+:root {
+  /* colors */
+  --sky-top: #0a1020;                      /* sky, top of the page */
+  --sky-bottom: #17233d;                   /* sky, bottom of the page */
+  --glass: rgba(170, 200, 255, 0.06);      /* frosted panels */
+  --glass-line: rgba(170, 200, 255, 0.16); /* thin borders */
+  --text: #e6edf9;
+  --muted: #9bacc9;
+  --lamp: #ffb85c;                         /* warm lamp accent*/
+  --lamp-text: #ffb85c;                    /* same but for text */
+  --rain: #86b9ff;                         /* links */
+
+  /* light and atmosphere */
+  --lamp-glow: rgba(255, 184, 92, 0.4);    /* glow in the top-right corner */
+  --glow: rgba(255, 184, 92, 0.14);        /* halo on hover */
+  --rain-drop: rgba(160, 200, 255, 0.32);  /* for rain.js */
+  --cup: #2c3d63;
+  --saucer: #22304f;
+  --tea: #d98a2b;
+  --steam: rgba(230, 237, 249, 0.6);
+
+  /* fonts (loaded from Google Fonts) */
+  --font-title: "Fraunces", Georgia, serif;
+  --font-body: "Quicksand", "Trebuchet MS", sans-serif;
+
+  /* shape */
+  --radius: 16px;
+}
+
+/* morning*/
+:root[data-theme="day"] {
+  --sky-top: #e3eaf3;
+  --sky-bottom: #b7c7da;
+  --glass: rgba(255, 255, 255, 0.5);
+  --glass-line: rgba(40, 70, 120, 0.22);
+  --text: #16223b;
+  --muted: #3d4f6e;
+  --lamp: #f0a43a;
+  --lamp-text: #8a4500;
+  --rain: #164d99;
+
+  --lamp-glow: rgba(255, 255, 255, 0.8);
+  --glow: rgba(240, 164, 58, 0.28);
+  --rain-drop: rgba(55, 85, 135, 0.38);
+  --cup: #f6f9fc;
+  --saucer: #dde5ef;
+  --tea: #b86a1c;
+  --steam: rgba(70, 90, 125, 0.45);
+}
+
+
+/*Base */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.7;
+  color: var(--text);
+  background-color: var(--sky-top); /* shown if the gradient fails */
+  background-image: linear-gradient(var(--sky-top), var(--sky-bottom));
+  background-attachment: fixed;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-title);
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0 0 0.6rem;
+}
+
+h1 {
+  font-size: clamp(2.4rem, 7vw, 4rem);
+  letter-spacing: -0.015em;
+}
+
+h2 {
+  font-size: 1.7rem;
+}
+
+p {
+  margin: 0 0 1rem;
+}
+
+a {
+  color: var(--rain);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--lamp-text);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--lamp-text);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+::selection {
+  background: var(--lamp);
+  color: #1a1205;
+}
+
+/* Keeps content centered */
+.wrap {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* Narrower column for pages with books of text */
+.narrow {
+  max-width: 760px;
+}
+
+/* It's raining */
+#rain {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /*z-index: 2; I didn't saw it at first*/
+  z-index: 0;
+  pointer-events: none;
+}
+
+.site-header,
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+/*Frosted-glass look */
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-radius: var(--radius);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+
+/* Lamp 
+
+On page open, lamp switches on 
+then flickers slightly, forever. */
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(520px 360px at 88% -4%, var(--lamp-glow), transparent 70%);
+  animation:
+    lamp-on 2s ease-out both,
+    lamp-flicker 9s 2s infinite;
+}
+
+@keyframes lamp-on {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes lamp-flicker {
+  0%, 100% { opacity: 1; }
+  8%       { opacity: 0.9; }
+  12%      { opacity: 1; }
+  47%      { opacity: 0.96; }
+  52%      { opacity: 0.84; }
+  55%      { opacity: 0.97; }
+  80%      { opacity: 0.93; }
+}
+
+
+/* Thunder (remove if ugly)
+A soft pulse of pale blue light 
+(It's not ugly, yipee!)
+*/
+body::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background: #bed7ff;
+  opacity: 0;
+}
+
+body.flash::after {
+  animation: lightning 1.6s ease-out;
+}
+
+@keyframes lightning {
+  0%   { opacity: 0; }
+  12%  { opacity: 0.13; }
+  100% { opacity: 0; }
+}
+
+
+/* Header */
+
+.bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.bar-right {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--text);
+  text-decoration: none;
+  font-family: var(--font-title);
+  font-weight: 600;
+  font-size: 1.3rem;
+}
+
+.brand:hover {
+  color: var(--text);
+}
+
+nav {
+  display: flex;
+  gap: 1.5rem;
+}
+
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.2s, text-shadow 0.2s;
+}
+
+nav a:hover {
+  color: var(--lamp-text);
+  text-shadow: 0 0 14px var(--glow);
+}
+
+
+/* Home */
+
+.hero {
+  padding: 5rem 0 3rem;
+}
+
+.hero .intro {
+  color: var(--lamp-text);
+  margin-bottom: 0.75rem;
+}
+
+.lead {
+  max-width: 34rem;
+  font-size: 1.2rem;
+  color: var(--muted);
+}
+
+section {
+  padding: 2.5rem 0;
+}
+
+.about {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  align-items: center;
+  gap: 2rem;
+  padding: 1.75rem;
+}
+
+.about p:last-of-type {
+  margin-bottom: 0;
+}
+
+.portrait {
+  display: block;
+  width: 100%;
+  max-width: 180px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--glass-line);
+  background: radial-gradient(circle, rgba(134, 185, 255, 0.2), transparent 70%);
+}
+
+/* Small pills: skills on home page, details on project pages */
+.chips {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chips li {
+  font-size: 0.9rem;
+  padding: 0.2rem 0.8rem;
+  border: 1px solid var(--glass-line);
+  border-radius: 999px;
+  background: var(--glass);
+}
+
+
+/* Project cards */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.card {
+  display: block;
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.3s;
+}
+
+/* Hovering a card lifts and warms up */
+.card:hover {
+  color: inherit;
+  transform: translateY(-4px);
+  border-color: var(--lamp);
+  box-shadow:
+    0 10px 40px var(--glow),
+    inset 0 0 40px var(--glow);
+}
+
+.card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 1rem 1.2rem 1.3rem;
+}
+
+.card h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.3rem;
+}
+
+.card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.card .tag {
+  color: var(--lamp-text);
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+}
+
+.card-empty {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--muted);
+  border: 1px dashed var(--glass-line);
+  border-radius: var(--radius);
+}
+
+
+/* Buttons / links */
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.6rem 1.3rem;
+  color: var(--text);
+  text-decoration: none;
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-radius: 999px;
+  transition: border-color 0.2s, color 0.2s, box-shadow 0.3s;
+}
+
+.btn:hover {
+  color: var(--lamp-text);
+  border-color: var(--lamp);
+  box-shadow: 0 0 22px var(--glow);
+}
+
+.btn-main {
+  color: #1a1205;
+  font-weight: 700;
+  background: var(--lamp);
+  border-color: var(--lamp);
+}
+
+.btn-main:hover {
+  color: #1a1205;
+  background: #ffc983;
+  box-shadow: 0 0 28px var(--glow);
+}
+
+
+/*Project page*/
+
+.back {
+  display: inline-block;
+  margin: 1.5rem 0 1rem;
+}
+
+.cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  margin: 1.5rem 0 2rem;
+  border: 1px solid var(--glass-line);
+  border-radius: var(--radius);
+}
+
+.project h2 {
+  margin-top: 2.25rem;
+}
+
+.project ul.list {
+  padding-left: 1.3rem;
+}
+
+.project ul.list li {
+  margin-bottom: 0.4rem;
+}
+
+.project ul.list li::marker {
+  color: var(--lamp-text);
+}
+
+/* The box to remove once page is done */
+.notice {
+  margin-bottom: 1.5rem;
+  padding: 0.8rem 1rem;
+  color: var(--lamp-text);
+  font-size: 0.95rem;
+  border: 1px dashed var(--lamp);
+  border-radius: 12px;
+}
+
+
+/* Footer */
+
+.site-footer {
+  padding: 3rem 1.25rem 2rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* inline SVG;
+IT'S A FUCKING TEXT DRAWING
+Please kill me
+Don't do this
+Don't be like me
+And keep your sanity
+By drawing the tea cup
+(or using internet)
+Then exporting it
+And use it as an <img>
+Fuck.
+*/
+.tea {
+  position: relative;
+  width: 100px;
+  height: 64px;
+  margin: 3rem auto 1.5rem;
+  z-index: 1;
+}
+
+.tea svg {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  display: block;
+  filter: drop-shadow(0 0 10px var(--glow));
+  z-index: 1;
+}
+
+.tea .saucer {
+  fill: var(--saucer);
+  stroke: var(--glass-line);
+  z-index: 1;
+}
+
+.tea .cup {
+  fill: var(--cup);
+  stroke: var(--glass-line);
+  z-index: 1;
+}
+
+.tea .handle {
+  fill: none;
+  stroke: var(--cup);
+  stroke-width: 5;
+  stroke-linecap: round;
+  z-index: 1;
+}
+
+.tea .tea-surface {
+  fill: var(--tea);
+  z-index: 1;
+}
+
+.steam {
+  position: absolute;
+  bottom: 44px;
+  width: 10px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--steam);
+  filter: blur(6px);
+  opacity: 0;
+  animation: steam-rise 5s ease-in-out infinite;
+  z-index: 1;
+}
+
+.steam:nth-child(1) { left: 34px; animation-delay: 0s; }
+.steam:nth-child(2) { left: 46px; animation-delay: 1.8s; animation-duration: 6s; }
+.steam:nth-child(3) { left: 58px; animation-delay: 3.2s; animation-duration: 5.5s; }
+.steam:nth-child(4) { left: 20px; animation-delay: 0.7s; animation-duration: 9s; }
+
+@keyframes steam-rise {
+  0%   { transform: translate(0, 0) scale(0.8, 0.6); opacity: 0; }
+  20%  { opacity: 0.8; }
+  60%  { transform: translate(6px, -22px) scale(1.2, 1); }
+  100% { transform: translate(-4px, -48px) scale(1.8, 1.2); opacity: 0; }
+}
+
+.atmosphere {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.75rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* "seg" = a row of buttons stuck together where one is selected */
+.seg {
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-radius: 999px;
+}
+
+.seg span {
+  padding: 0.3rem 0.8rem;
+}
+
+.seg button {
+  font: inherit;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  border-left: 1px solid var(--glass-line);
+  padding: 0.3rem 0.8rem;
+  cursor: pointer;
+}
+
+.seg button:hover {
+  color: var(--lamp-text);
+}
+
+.seg button[aria-pressed="true"] {
+  color: #1a1205;
+  font-weight: 700;
+  background: var(--lamp);
+}
+
+/* "pill" = a single round button */
+.pill {
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--text);
+  background: var(--glass);
+  border: 1px solid var(--glass-line);
+  border-radius: 999px;
+  padding: 0.3rem 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, box-shadow 0.3s;
+}
+
+.pill:hover {
+  color: var(--lamp-text);
+  border-color: var(--lamp);
+  box-shadow: 0 0 18px var(--glow);
+}
+
+.pill[aria-pressed="true"] {
+  border-color: var(--lamp);
+}
+
+/* An "off" toggle */
+.pill[aria-pressed="false"] {
+  color: var(--muted);
+  text-decoration: line-through;
+}
+
+/* Hidden buttons in HTML and shown by JS file */
+[hidden] {
+  display: none !important;
+}
+
+
+/* Small screens */
+
+@media (max-width: 640px) {
+  .hero {
+    padding-top: 3rem;
+  }
+
+  .about {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .portrait {
+    max-width: 140px;
+  }
+}
+
+
+
+/*  No lamp animation, no steam, no flicker, no flash. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
