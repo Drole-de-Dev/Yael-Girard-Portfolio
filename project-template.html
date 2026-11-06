@@ -12,6 +12,7 @@
   <script src="js/theme.js"></script>
   <script src="js/rain.js" defer></script>
   <script src="js/thunder.js" defer></script>
+  <script src="js/carousel.js" defer></script>
 </head>
 <body>
 
@@ -50,7 +51,40 @@
       <li>My role?</li>
     </ul>
 
-    <img class="cover" src="images/cover-placeholder.svg" alt="Describe your cover image here">
+    <!-- Put your image in the images folder. Keep the alt text: it describes the image. -->
+    <img class="cover" src="images/cover-placeholder.jpg" alt="Describe your cover image here">
+
+    <!-- SCREENSHOT CAROUSEL (manual). One <li> per screenshot: put the images in the
+         images folder. Keep the alt text (it describes the image) and the caption.
+         Delete this whole block if you have no screenshots yet. -->
+    <section class="carousel" aria-label="Screenshots">
+      <ul class="slides" tabindex="0">
+        <li>
+          <figure>
+            <img src="images/cover-placeholder.jpg" alt="Describe what the screenshot shows">
+            <figcaption>Caption: what is happening in this screenshot?</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <img src="images/cover-placeholder.jpg" alt="Describe what the screenshot shows" loading="lazy">
+            <figcaption>Caption: what is happening in this screenshot?</figcaption>
+          </figure>
+        </li>
+        <li>
+          <figure>
+            <img src="images/cover-placeholder.jpg" alt="Describe what the screenshot shows" loading="lazy">
+            <figcaption>Caption: what is happening in this screenshot?</figcaption>
+          </figure>
+        </li>
+      </ul>
+      <!-- Shown by js/carousel.js -->
+      <div class="carousel-nav" hidden>
+        <button type="button" data-dir="prev" aria-label="Previous screenshot">Previous</button>
+        <span class="carousel-count" aria-live="polite"></span>
+        <button type="button" data-dir="next" aria-label="Next screenshot">Next</button>
+      </div>
+    </section>
 
     <h2>About the project</h2>
     <p>Two or three sentences.</p>
